@@ -257,6 +257,8 @@ class Pipelines(HuggingFace):
                         num_return_sequences=num_samples,
                         pad_token_id=self.source.model.config.eos_token_id,
                         stopping_criteria=[self._sep_stopper])
+            print("Generations:")
+            print(generations)
             for gen in generations:
                 generated_text = gen['generated_text'][len(p):]
                 # Trim off text after stop_sequence
@@ -268,6 +270,10 @@ class Pipelines(HuggingFace):
                     generated_text = generated_text[:-1]
                 suggestion_texts.append(generated_text)
 
+        print("Suggestion Texts:")
+        print(suggestion_texts)
+        print("Returns:")
+        print(self._parse_suggestion_texts(suggestion_texts, prompts))
         return self._parse_suggestion_texts(suggestion_texts, prompts)
 
 
