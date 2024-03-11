@@ -203,10 +203,15 @@ class Transformers(HuggingFace):
         self.source.prepare_inputs_for_generation = prepare_inputs_for_generation
         
         # run the generative LM for each prompt
+        print("Prompt Strings:")
+        print(prompt_strings)
         suggestion_texts = []
         for prompt_string in prompt_strings:
             input_ids = self.tokenizer.encode(prompt_string, return_tensors='pt').to(self.device)
             cache_out = self.source(input_ids[:, :-1], use_cache=True)
+
+            print("Model Output:")
+            print(cache_out)
 
             for _ in range(num_samples):
                 self._sep_stopper.prompt_length = 1
