@@ -252,6 +252,8 @@ class Pipelines(HuggingFace):
         prompt_strings = self._create_prompt_strings(prompts, topic, mode)
 
         suggestion_texts = []
+        print("prompt_strings")
+        print(prompt_strings)
         for p in prompt_strings:
             prompt_length = len(self.source.tokenizer.tokenize(p))
             self._sep_stopper.prompt_length = prompt_length
@@ -264,6 +266,8 @@ class Pipelines(HuggingFace):
                         stopping_criteria=[self._sep_stopper])
             print("Generations:")
             print(generations)
+            print("Stop Sequence:")
+            print(self.stop_sequence)
             for gen in generations:
                 generated_text = gen['generated_text'][len(p):]
                 # Trim off text after stop_sequence
