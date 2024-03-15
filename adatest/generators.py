@@ -267,7 +267,7 @@ class Pipelines(HuggingFace):
             print("Generations:")
             print(generations)
             for gen in generations:
-                generated_text = gen['generated_text'][len(p):]
+                generated_text = gen['generated_text']
                 print("Generated text: " + generated_text)
                 # Trim off text after stop_sequence
                 stop_seq_index = generated_text.find(self.stop_sequence)
