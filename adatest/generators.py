@@ -266,10 +266,9 @@ class Pipelines(HuggingFace):
                         stopping_criteria=[self._sep_stopper])
             print("Generations:")
             print(generations)
-            print("Stop Sequence:")
-            print(self.stop_sequence)
             for gen in generations:
                 generated_text = gen['generated_text'][len(p):]
+                print("Generated text: " + generated_text)
                 # Trim off text after stop_sequence
                 stop_seq_index = generated_text.find(self.stop_sequence)
                 if (stop_seq_index != -1):
@@ -277,10 +276,9 @@ class Pipelines(HuggingFace):
                 elif generated_text[-1] == self.quote:
                     # Sometimes the quote is at the end without a trailing newline
                     generated_text = generated_text[:-1]
+                print("Text after parsing: " + generated_text)
                 suggestion_texts.append(generated_text)
 
-        print("Suggestion Texts:")
-        print(suggestion_texts)
         print("Returns:")
         print(self._parse_suggestion_texts(suggestion_texts, prompts))
         return self._parse_suggestion_texts(suggestion_texts, prompts)
