@@ -264,8 +264,8 @@ class Pipelines(HuggingFace):
                         num_return_sequences=num_samples,
                         pad_token_id=self.source.model.config.eos_token_id,
                         stopping_criteria=[self._sep_stopper])
-            print("Generations:")
-            print(generations)
+            # print("Generations:")
+            # print(generations)
             for gen in generations:
                 generated_text = gen['generated_text']
                 print("Generated text: " + generated_text)
