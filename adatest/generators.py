@@ -270,7 +270,7 @@ class Pipelines(HuggingFace):
                 generated_text = gen['generated_text']
                 print("Generated text: " + generated_text)
                 # Trim off text after stop_sequence
-                stop_seq_index = generated_text.find(self.stop_sequence)
+                stop_seq_index = generated_text.rfind(self.stop_sequence)
                 if (stop_seq_index != -1):
                     generated_text = generated_text[:stop_seq_index]
                 elif generated_text[-1] == self.quote:
