@@ -138,7 +138,7 @@ class TextCompletionGenerator(Generator):
                 suggestion_text = self.filter(suggestion_text)
             prompt_ind = i // num_samples
             # prompt = prompts[prompt_ind]
-            suggestions = suggestion_text.split(".")
+            suggestions = suggestion_text.split(". ")
             samples.extend(suggestions)
 
             # # if len(self.quote) > 0: # strip any dangling quote
