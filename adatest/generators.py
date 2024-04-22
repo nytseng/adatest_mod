@@ -139,6 +139,7 @@ class TextCompletionGenerator(Generator):
             prompt_ind = i // num_samples
             # prompt = prompts[prompt_ind]
             suggestions = suggestion_text.split(". ")
+            print("SPLITTING TESTS MANUALLY")
             samples.extend(suggestions)
 
             # # if len(self.quote) > 0: # strip any dangling quote
