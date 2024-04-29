@@ -134,12 +134,12 @@ class TextCompletionGenerator(Generator):
         
         num_samples = len(generated_tests) // len(prompts)
         valid_tests = []
-        for i, test_str in enumerate(generated_tests):
+        for i, tests in enumerate(generated_tests):
             # if callable(self.filter):
             #     test_str = self.filter(generated_tests)
             sentence_counter = 1
 
-            if bool(re.search(r'\d', test_str)): # if the contains any integers.
+            if bool(re.search(r'\d', tests)): # if the contains any integers.
                 while True:
                     split_tok = str(sentence_counter)+". "
                     if sentence_counter > 5 or len(valid_tests) >= 5: # limit to 5 generations
@@ -162,7 +162,7 @@ class TextCompletionGenerator(Generator):
                         sentence_counter += 1
                     return valid_tests
             else: # parse without integers
-                suggestions = test_str.split(". ")
+                suggestions = tests.split(". ")
                 print("SPLITTING TESTS MANUALLY")
                 valid_tests.extend(suggestions)
         return valid_tests 
