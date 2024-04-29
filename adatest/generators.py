@@ -134,21 +134,19 @@ class TextCompletionGenerator(Generator):
         
         num_samples = len(generated_tests) // len(prompts)
         valid_tests = []
-        print("generated_tests")
-        print(generated_tests)
+        # print("generated_tests")
+        # print(generated_tests)
         for i, tests in enumerate(generated_tests):
-            print("tests (line 140) = ")
-            print(tests)
-            # if callable(self.filter):
-            #     test_str = self.filter(generated_tests)
-
+            # print("tests (line 140) = ")
+            # print(tests)
             if bool(re.search(r'\d', tests)): # if the contains any integers.
                 sentence_counter = 1
                 while True:
                     split_tok = str(sentence_counter)+". "
                     if sentence_counter >= 5 or len(valid_tests) >= 5: # limit to 5 generations
                         print("exceeded 5 tests, return early")
-                        return valid_tests
+                        pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
+                        return pruned_tests
 
                     print("next split_tok = " + split_tok)
                     if split_tok in tests:
@@ -166,7 +164,6 @@ class TextCompletionGenerator(Generator):
                         sentence_counter += 1
                     print("middle check valid_tests 167: ")
                     print(valid_tests)
-                    # return valid_tests
             else: # parse without integers
                 suggestions = tests.split(". ")
                 print("SPLITTING TESTS by '. '")
@@ -174,11 +171,13 @@ class TextCompletionGenerator(Generator):
         print("valid_tests 174: ")
 
         for test in valid_tests:
+
             if len(test) > 80 or ';' in test:
                 valid_tests.remove(test)
         
-        print(valid_tests)
-        return valid_tests 
+        pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
+        print(pruned_tests)
+        return pruned_tests 
 
 class HuggingFace(TextCompletionGenerator):
     """This class exists to embed the StopAtSequence class."""
