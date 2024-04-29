@@ -124,36 +124,48 @@ class TextCompletionGenerator(Generator):
                 prompt_strings.append(prompt_string + self.quote)
         return prompt_strings
     
-    def _parse_suggestion_texts(self, suggestion_texts, prompts):
+    def _parse_suggestion_texts(self, generated_tests, prompts):
         """ Parse the suggestion texts into tuples.
         """
-        assert len(suggestion_texts) % len(prompts) == 0, "Missing prompt completions!"
+        import re
+        assert len(generated_tests) % len(prompts) == 0, "Missing prompt completions!"
 
         # _, gen_value1, gen_value2, gen_value3 = self._varying_values(prompts, "") # note that "" is an unused topic argument
         
-        num_samples = len(suggestion_texts) // len(prompts)
-        samples = []
-        for i, suggestion_text in enumerate(suggestion_texts):
+        num_samples = len(generated_tests) // len(prompts)
+        valid_tests = []
+        for i, test_str in enumerate(generated_tests):
             if callable(self.filter):
-                suggestion_text = self.filter(suggestion_text)
-            prompt_ind = i // num_samples
-            # prompt = prompts[prompt_ind]
-            suggestions = suggestion_text.split(". ")
-            print("SPLITTING TESTS MANUALLY")
-            samples.extend(suggestions)
+                test_str = self.filter(generated_tests)
+            sentence_counter = 1
 
-            # # if len(self.quote) > 0: # strip any dangling quote
-            # #     suggestion[-1] = suggestion[-1][:-len(self.quote)]
-            # if not gen_value1:
-            #     suggestion = [prompt[0][0]] + suggestion
-            # if not gen_value2:
-            #     suggestion = suggestion[:1] + [prompt[0][2]] + suggestion[1:]
-            # if not gen_value3:
-            #     suggestion = suggestion[:2] + [prompt[0][3]]
+            if bool(re.search(r'\d', test_str)): # if the contains any integers.
+                while True:
+                    split_tok = str(sentence_counter)+". "
+                    if sentence_counter > 5 or len(valid_tests) >= 5: # limit to 5 generations
+                        print("exceeded 5 tests, return early")
+                        return valid_tests
 
-            # if len(suggestion) == 3:
-            #     samples.append(tuple(suggestion))
-        return list(set(samples))
+                    print("next split_tok" + split_tok)
+                    if split_tok in tests:
+                        split_list = tests.split(split_tok)
+                        print("SPLITTING TESTS by " + split_tok)
+                        print(split_list[0])
+                        temp_sentence = split_list[0]
+                        if temp_sentence != None and len(temp_sentence) > 8:
+                            valid_tests.append(temp_sentence)
+                            print("valid test: " + temp_sentence)
+
+                        tests = split_list[1]
+                        print(tests)
+
+                        sentence_counter += 1
+                    return valid_tests
+            else: # parse without integers
+                suggestions = test_str.split(". ")
+                print("SPLITTING TESTS MANUALLY")
+                valid_tests.extend(suggestions)
+        return valid_tests 
 
 class HuggingFace(TextCompletionGenerator):
     """This class exists to embed the StopAtSequence class."""
