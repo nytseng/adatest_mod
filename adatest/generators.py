@@ -141,9 +141,9 @@ class TextCompletionGenerator(Generator):
             print(tests)
             # if callable(self.filter):
             #     test_str = self.filter(generated_tests)
-            sentence_counter = 1
 
             if bool(re.search(r'\d', tests)): # if the contains any integers.
+                sentence_counter = 1
                 while True:
                     split_tok = str(sentence_counter)+". "
                     if sentence_counter > 5 or len(valid_tests) >= 5: # limit to 5 generations
@@ -164,11 +164,15 @@ class TextCompletionGenerator(Generator):
                         print(tests)
 
                         sentence_counter += 1
+                    print("valid_tests 167: ")
+                    print(valid_tests)
                     return valid_tests
             else: # parse without integers
                 suggestions = tests.split(". ")
                 print("SPLITTING TESTS by '. '")
                 valid_tests.extend(suggestions)
+        print("valid_tests 174: ")
+        print(valid_tests)
         return valid_tests 
 
 class HuggingFace(TextCompletionGenerator):
