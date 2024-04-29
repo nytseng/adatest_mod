@@ -172,6 +172,11 @@ class TextCompletionGenerator(Generator):
                 print("SPLITTING TESTS by '. '")
                 valid_tests.extend(suggestions)
         print("valid_tests 174: ")
+
+        for test in valid_tests:
+            if len(test) > 80 or ';' in test:
+                valid_tests.remove(test)
+        
         print(valid_tests)
         return valid_tests 
 
