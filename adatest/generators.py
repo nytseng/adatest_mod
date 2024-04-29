@@ -160,8 +160,9 @@ class TextCompletionGenerator(Generator):
 
                         tests = split_list[1]
                         print(tests)
-
                         sentence_counter += 1
+                    else: 
+                        continue
                     print("middle check valid_tests 167: ")
                     print(valid_tests)
             else: # parse without integers
@@ -171,7 +172,7 @@ class TextCompletionGenerator(Generator):
         print("valid_tests 174: ")
 
         for test in valid_tests:
-
+            print("pruning now")
             if len(test) > 80 or ';' in test:
                 valid_tests.remove(test)
         
