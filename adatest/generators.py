@@ -141,10 +141,10 @@ class TextCompletionGenerator(Generator):
             # print(tests)
             if bool(re.search(r'\d', tests)): # if the contains any integers.
                 sentence_counter = 1
-                while True:
+                while sentence_counter < 5:
                     split_tok = str(sentence_counter)+". "
-                    if sentence_counter >= 4 or len(valid_tests) >= 5 or len(tests) == 0: # limit to 5 generations
-                        print("parsed 4 tests, return early")
+                    if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
+                        print("parsed 5 tests, return early")
                         pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
                         return pruned_tests
 
