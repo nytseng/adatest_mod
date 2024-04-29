@@ -134,7 +134,11 @@ class TextCompletionGenerator(Generator):
         
         num_samples = len(generated_tests) // len(prompts)
         valid_tests = []
+        print("generated_tests")
+        print(generated_tests)
         for i, tests in enumerate(generated_tests):
+            print("tests (line 140) = ")
+            print(tests)
             # if callable(self.filter):
             #     test_str = self.filter(generated_tests)
             sentence_counter = 1
@@ -146,7 +150,7 @@ class TextCompletionGenerator(Generator):
                         print("exceeded 5 tests, return early")
                         return valid_tests
 
-                    print("next split_tok" + split_tok)
+                    print("next split_tok = " + split_tok)
                     if split_tok in tests:
                         split_list = tests.split(split_tok)
                         print("SPLITTING TESTS by " + split_tok)
@@ -163,7 +167,7 @@ class TextCompletionGenerator(Generator):
                     return valid_tests
             else: # parse without integers
                 suggestions = tests.split(". ")
-                print("SPLITTING TESTS MANUALLY")
+                print("SPLITTING TESTS by '. '")
                 valid_tests.extend(suggestions)
         return valid_tests 
 
@@ -217,8 +221,8 @@ class Transformers(HuggingFace):
         self.source.prepare_inputs_for_generation = prepare_inputs_for_generation
         
         # run the generative LM for each prompt
-        print("Prompt Strings:")
-        print(prompt_strings)
+        # print("Prompt Strings:")
+        # print(prompt_strings)
         suggestion_texts = []
         for prompt_string in prompt_strings:
             input_ids = self.tokenizer.encode(prompt_string, return_tensors='pt').to(self.device)
