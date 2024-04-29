@@ -164,9 +164,9 @@ class TextCompletionGenerator(Generator):
                         print(tests)
 
                         sentence_counter += 1
-                    print("valid_tests 167: ")
+                    print("middle check valid_tests 167: ")
                     print(valid_tests)
-                    return valid_tests
+                    # return valid_tests
             else: # parse without integers
                 suggestions = tests.split(". ")
                 print("SPLITTING TESTS by '. '")
