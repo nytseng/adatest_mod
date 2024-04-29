@@ -135,8 +135,8 @@ class TextCompletionGenerator(Generator):
         num_samples = len(generated_tests) // len(prompts)
         valid_tests = []
         for i, test_str in enumerate(generated_tests):
-            if callable(self.filter):
-                test_str = self.filter(generated_tests)
+            # if callable(self.filter):
+            #     test_str = self.filter(generated_tests)
             sentence_counter = 1
 
             if bool(re.search(r'\d', test_str)): # if the contains any integers.
