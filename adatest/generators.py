@@ -143,7 +143,7 @@ class TextCompletionGenerator(Generator):
                 sentence_counter = 1
                 while True:
                     split_tok = str(sentence_counter)+". "
-                    if sentence_counter >= 4 or len(valid_tests) >= 5: # limit to 5 generations
+                    if sentence_counter >= 4 or len(valid_tests) >= 5 or len(tests) == 0: # limit to 5 generations
                         print("parsed 4 tests, return early")
                         pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
                         return pruned_tests
@@ -159,7 +159,7 @@ class TextCompletionGenerator(Generator):
                             print("valid test: " + temp_sentence)
 
                         tests = split_list[1]
-                        # print(tests)
+                        print(tests)
 
                         sentence_counter += 1
                     print("middle check valid_tests 167: ")
