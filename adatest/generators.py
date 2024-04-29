@@ -365,7 +365,8 @@ class AI21(TextCompletionGenerator):
         self.temperature = temperature
         self.event_loop = asyncio.get_event_loop()
     
-    def __call__(self, prompts, topic, topic_description, mode, scorer=None, num_samples=1, max_length=100):
+    def __call__(self, prompts, topic, topic_description, mode, scorer=None, num_samples=1, max_length=
+                 ):
         prompts, prompt_ids = self._validate_prompts(prompts)
         prompt_strings = self._create_prompt_strings(prompts, topic, mode)
         
