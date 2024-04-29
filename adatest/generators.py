@@ -162,7 +162,8 @@ class TextCompletionGenerator(Generator):
                         print(tests)
                         sentence_counter += 1
                     else: 
-                        continue
+                        print("token " + split_tok + " not found, return early")
+                        break
                     print("middle check valid_tests 167: ")
                     print(valid_tests)
             else: # parse without integers
