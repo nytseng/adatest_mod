@@ -146,7 +146,7 @@ class TextCompletionGenerator(Generator):
                 sentence_counter = 1
                 while True:
                     split_tok = str(sentence_counter)+". "
-                    if sentence_counter > 5 or len(valid_tests) >= 5: # limit to 5 generations
+                    if sentence_counter >= 5 or len(valid_tests) >= 5: # limit to 5 generations
                         print("exceeded 5 tests, return early")
                         return valid_tests
 
@@ -161,7 +161,7 @@ class TextCompletionGenerator(Generator):
                             print("valid test: " + temp_sentence)
 
                         tests = split_list[1]
-                        print(tests)
+                        # print(tests)
 
                         sentence_counter += 1
                     print("middle check valid_tests 167: ")
