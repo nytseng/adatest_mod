@@ -173,14 +173,15 @@ class TextCompletionGenerator(Generator):
 
         for test in valid_tests:
             print("pruning now")
-            if len(test) > 80 or ';' in test:
+            if len(test) > 90 or ';' in test:
                 valid_tests.remove(test)
                 print("removed test: " + test)
             else:
                 print("not removed test: " + test)
 
         pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
-        print("returned tests: " + pruned_tests)
+        print("returned tests: ")
+        print(pruned_tests)
         return pruned_tests 
 
 class HuggingFace(TextCompletionGenerator):
