@@ -138,10 +138,9 @@ class TextCompletionGenerator(Generator):
         # print(generated_tests)
         sentence_counter = 1
         for i, tests in enumerate(generated_tests):
-            # print("tests (line 140) = ")
-            # print(tests)
+            
             if bool(re.search(r'\d', tests)): # if the contains any integers.
-                while sentence_counter < 5:
+                while sentence_counter < 6:
                     split_tok = str(sentence_counter)+". "
                     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
                         print("parsed 5 tests, return early")
@@ -173,7 +172,7 @@ class TextCompletionGenerator(Generator):
 
         for test in valid_tests:
             print("pruning now")
-            if len(test) > 90 or ';' in test:
+            if len(test) > 115 or ';' in test:
                 valid_tests.remove(test)
                 print("removed test: " + test)
             else:
@@ -283,8 +282,8 @@ class Pipelines(HuggingFace):
         prompt_strings = self._create_prompt_strings(prompts, topic, mode)
 
         suggestion_texts = []
-        print("prompt_strings")
-        print(prompt_strings)
+        # print("prompt_strings")
+        # print(prompt_strings)
         for p in prompt_strings:
             prompt_length = len(self.source.tokenizer.tokenize(p))
             self._sep_stopper.prompt_length = prompt_length
