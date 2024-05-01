@@ -146,6 +146,7 @@ class TextCompletionGenerator(Generator):
                     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
                         print("parsed 5 tests, return early")
                         pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
+                        pruned_tests = [test.replace('* ', '', test).strip() for test in valid_tests] 
                         return pruned_tests
 
                     print("next split_tok = " + split_tok)
@@ -164,8 +165,8 @@ class TextCompletionGenerator(Generator):
                     else: 
                         print("token " + split_tok + " not found, return early")
                         break
-                    print("middle check valid_tests 167: ")
-                    print(valid_tests)
+                    # print("middle check valid_tests 167: ")
+                    # print(valid_tests)
             else: # parse without integers
                 suggestions = tests.split(". ")
                 print("SPLITTING TESTS by '. '")
@@ -178,6 +179,7 @@ class TextCompletionGenerator(Generator):
                 valid_tests.remove(test)
         
         pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
+        pruned_tests = [test.replace('* ', '', test).strip() for test in valid_tests] 
         print(pruned_tests)
         return pruned_tests 
 
