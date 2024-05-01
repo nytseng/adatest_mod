@@ -167,6 +167,7 @@ class TextCompletionGenerator(Generator):
                     # print(valid_tests)
             else: # parse without integers
                 tests = tests.split(". ")
+                tests = [test.replace('*', '') for test in tests]
                 print("SPLITTING TESTS by '. '")
                 valid_tests.extend(tests)
 
@@ -178,7 +179,7 @@ class TextCompletionGenerator(Generator):
             else:
                 print("not removed test: " + test)
 
-        pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
+        pruned_tests = [re.sub(r'\([^)]*\)', '', test).strip() for test in valid_tests]
         print("returned tests: ")
         print(pruned_tests)
         return pruned_tests 
