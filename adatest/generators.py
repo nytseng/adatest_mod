@@ -136,11 +136,11 @@ class TextCompletionGenerator(Generator):
         valid_tests = []
         # print("generated_tests")
         # print(generated_tests)
+        sentence_counter = 1
         for i, tests in enumerate(generated_tests):
             # print("tests (line 140) = ")
             # print(tests)
             if bool(re.search(r'\d', tests)): # if the contains any integers.
-                sentence_counter = 1
                 while sentence_counter < 5:
                     split_tok = str(sentence_counter)+". "
                     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
@@ -175,9 +175,12 @@ class TextCompletionGenerator(Generator):
             print("pruning now")
             if len(test) > 80 or ';' in test:
                 valid_tests.remove(test)
-        
+                print("removed test: " + test)
+            else:
+                print("not removed test: " + test)
+
         pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
-        print(pruned_tests)
+        print("returned tests: " + pruned_tests)
         return pruned_tests 
 
 class HuggingFace(TextCompletionGenerator):
