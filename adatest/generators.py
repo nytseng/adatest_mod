@@ -145,8 +145,7 @@ class TextCompletionGenerator(Generator):
                     split_tok = str(sentence_counter)+". "
                     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
                         print("parsed 5 tests, return early")
-                        pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
-                        pruned_tests = [test.replace('* ', '', test).strip() for test in valid_tests] 
+                        pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
                         return pruned_tests
 
                     print("next split_tok = " + split_tok)
@@ -168,18 +167,16 @@ class TextCompletionGenerator(Generator):
                     # print("middle check valid_tests 167: ")
                     # print(valid_tests)
             else: # parse without integers
-                suggestions = tests.split(". ")
+                tests = tests.split(". ")
                 print("SPLITTING TESTS by '. '")
-                valid_tests.extend(suggestions)
-        print("valid_tests 174: ")
+                valid_tests.extend(tests)
 
         for test in valid_tests:
             print("pruning now")
             if len(test) > 80 or ';' in test:
                 valid_tests.remove(test)
         
-        pruned_tests = [re.sub(r'\([^)]*\)', '', test) for test in valid_tests] 
-        pruned_tests = [test.replace('* ', '', test).strip() for test in valid_tests] 
+        pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
         print(pruned_tests)
         return pruned_tests 
 
