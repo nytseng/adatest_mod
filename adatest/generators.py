@@ -173,7 +173,7 @@ class TextCompletionGenerator(Generator):
 
         for test in valid_tests:
             print("pruning now")
-            if len(test) > 115 or ';' in test:
+            if len(test) > 135 or ';' in test:
                 valid_tests.remove(test)
                 print("removed test: " + test)
             else:
