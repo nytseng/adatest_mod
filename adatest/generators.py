@@ -124,36 +124,65 @@ class TextCompletionGenerator(Generator):
                 prompt_strings.append(prompt_string + self.quote)
         return prompt_strings
     
-    def _parse_suggestion_texts(self, suggestion_texts, prompts):
+    def _parse_suggestion_texts(self, generated_tests, prompts):
         """ Parse the suggestion texts into tuples.
         """
-        assert len(suggestion_texts) % len(prompts) == 0, "Missing prompt completions!"
+        import re
+        assert len(generated_tests) % len(prompts) == 0, "Missing prompt completions!"
 
         # _, gen_value1, gen_value2, gen_value3 = self._varying_values(prompts, "") # note that "" is an unused topic argument
         
-        num_samples = len(suggestion_texts) // len(prompts)
-        samples = []
-        for i, suggestion_text in enumerate(suggestion_texts):
-            if callable(self.filter):
-                suggestion_text = self.filter(suggestion_text)
-            prompt_ind = i // num_samples
-            # prompt = prompts[prompt_ind]
-            suggestions = suggestion_text.split(". ")
-            print("SPLITTING TESTS MANUALLY")
-            samples.extend(suggestions)
+        num_samples = len(generated_tests) // len(prompts)
+        valid_tests = []
+        # print("generated_tests")
+        # print(generated_tests)
+        sentence_counter = 1
+        for i, tests in enumerate(generated_tests):
+            
+            if bool(re.search(r'\d', tests)): # if the contains any integers.
+                while sentence_counter < 6:
+                    split_tok = str(sentence_counter)+". "
+                    if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
+                        print("parsed 5 tests, return early")
+                        pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
+                        return pruned_tests
 
-            # # if len(self.quote) > 0: # strip any dangling quote
-            # #     suggestion[-1] = suggestion[-1][:-len(self.quote)]
-            # if not gen_value1:
-            #     suggestion = [prompt[0][0]] + suggestion
-            # if not gen_value2:
-            #     suggestion = suggestion[:1] + [prompt[0][2]] + suggestion[1:]
-            # if not gen_value3:
-            #     suggestion = suggestion[:2] + [prompt[0][3]]
+                    print("next split_tok = " + split_tok)
+                    if split_tok in tests:
+                        split_list = tests.split(split_tok)
+                        print("SPLITTING TESTS by " + split_tok)
+                        print(split_list[0])
+                        temp_sentence = split_list[0]
+                        if temp_sentence != None and len(temp_sentence) > 8:
+                            valid_tests.append(temp_sentence)
+                            print("valid test: " + temp_sentence)
 
-            # if len(suggestion) == 3:
-            #     samples.append(tuple(suggestion))
-        return list(set(samples))
+                        tests = split_list[1]
+                        print(tests)
+                        sentence_counter += 1
+                    else: 
+                        print("token " + split_tok + " not found, return early")
+                        break
+                    # print("middle check valid_tests 167: ")
+                    # print(valid_tests)
+            else: # parse without integers
+                tests = tests.split(". ")
+                tests = [test.replace('*', '') for test in tests]
+                print("SPLITTING TESTS by '. '")
+                valid_tests.extend(tests)
+
+        for test in valid_tests:
+            print("pruning now")
+            if len(test) > 135 or ';' in test:
+                valid_tests.remove(test)
+                print("removed test: " + test)
+            else:
+                print("not removed test: " + test)
+
+        pruned_tests = [re.sub(r'\([^)]*\)', '', test).strip() for test in valid_tests]
+        print("returned tests: ")
+        print(pruned_tests)
+        return pruned_tests 
 
 class HuggingFace(TextCompletionGenerator):
     """This class exists to embed the StopAtSequence class."""
@@ -205,8 +234,8 @@ class Transformers(HuggingFace):
         self.source.prepare_inputs_for_generation = prepare_inputs_for_generation
         
         # run the generative LM for each prompt
-        print("Prompt Strings:")
-        print(prompt_strings)
+        # print("Prompt Strings:")
+        # print(prompt_strings)
         suggestion_texts = []
         for prompt_string in prompt_strings:
             input_ids = self.tokenizer.encode(prompt_string, return_tensors='pt').to(self.device)
@@ -254,8 +283,8 @@ class Pipelines(HuggingFace):
         prompt_strings = self._create_prompt_strings(prompts, topic, mode)
 
         suggestion_texts = []
-        print("prompt_strings")
-        print(prompt_strings)
+        # print("prompt_strings")
+        # print(prompt_strings)
         for p in prompt_strings:
             prompt_length = len(self.source.tokenizer.tokenize(p))
             self._sep_stopper.prompt_length = prompt_length
