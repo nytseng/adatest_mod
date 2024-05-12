@@ -126,7 +126,7 @@ class TextCompletionGenerator(Generator):
     
     # returns only the tests we want
     # given input of all tests
-    def prune_tests(test_list):
+    def prune_tests(self, test_list):
         import re
         print("pruning tests")
         test_list = [re.sub(r'\([^)]*\)', '', test).strip() for test in test_list]
