@@ -140,6 +140,9 @@ class TextCompletionGenerator(Generator):
                 print("removed test: " + test)
             else:
                 print("not removed test: " + test)
+
+        if len(test_list) > 4:
+            test_list = test_list[:4]
         print("valid test_list")
         print(test_list)
         return test_list
