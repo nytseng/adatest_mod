@@ -129,7 +129,10 @@ class TextCompletionGenerator(Generator):
     def prune_tests(self, test_list):
         import re
         print("pruning tests")
-        test_list = [re.sub(r'\([^)]*\)', '', test).strip() for test in test_list]
+        test_list = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in test_list]
+        # pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
+        test_list = [re.sub(r'\[.+?\]', '', test).replace(' .', '.') for test in test_list]
+
         for test in test_list:
             if len(test) > 135 or ';' in test:
                 test_list.remove(test)
@@ -160,7 +163,6 @@ class TextCompletionGenerator(Generator):
                     split_tok = str(sentence_counter)+". "
                     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
                         print("parsed 5 tests, return early")
-                        # pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
                         pruned_tests = self.prune_tests(valid_tests)
                         return pruned_tests
 
@@ -188,16 +190,6 @@ class TextCompletionGenerator(Generator):
                 print("SPLITTING TESTS by '. '")
                 valid_tests.extend(tests)
 
-        # Pruning all tests
-        # for test in valid_tests:
-        #     print("pruning now")
-        #     if len(test) > 135 or ';' in test:
-        #         valid_tests.remove(test)
-        #         print("removed test: " + test)
-        #     else:
-        #         print("not removed test: " + test)
-
-        # pruned_tests = [re.sub(r'\([^)]*\)', '', test).strip() for test in valid_tests]
         pruned_tests = self.prune_tests(valid_tests)
         print("returned tests: ")
         print(pruned_tests)
