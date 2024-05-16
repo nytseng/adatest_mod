@@ -163,6 +163,7 @@ class TextCompletionGenerator(Generator):
         for i, tests in enumerate(generated_tests):
             
             if bool(re.search(r'\d. ', tests)): # if the contains any integers.
+                print("an integer found, parse with tokens")
                 while sentence_counter < 6:
                     split_tok = str(sentence_counter)+". "
                     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
@@ -322,7 +323,8 @@ class Pipelines(HuggingFace):
                 elif generated_text[-1] == self.quote:
                     # Sometimes the quote is at the end without a trailing newline
                     generated_text = generated_text[:-1]
-                print("Text after parsing: " + generated_text)
+                print("Text after parsing: ")
+                print(generated_text)
                 suggestion_texts.append(generated_text)
 
         print("Returns:")
