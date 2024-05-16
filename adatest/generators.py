@@ -131,7 +131,9 @@ class TextCompletionGenerator(Generator):
         print("pruning tests")
         test_list = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in test_list]
         # pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
-        test_list = [re.sub(r'\[.+?\]', '', test).replace(' .', '.') for test in test_list]
+        test_list = [re.sub(r'\[.+?\]', '', test).replace(' .', '.').strip() for test in test_list]
+        test_list = [re.sub(r'\(.*', '', test).strip() for test in test]
+
 
         for test in test_list:
             if len(test) > 135 or ';' in test:
