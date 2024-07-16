@@ -138,7 +138,7 @@ class TextCompletionGenerator(Generator):
             if len(test) > 135 or ';' in test:
                 test_list.remove(test)
                 print("removed test: " + test)
-            if 'Here are the rephrased sentences:' in test:
+            if 'Here are the ' in test: ##### Unnecessary llm output
                 test_list.remove(test)
             else:
                 print("not removed test: " + test)
@@ -163,7 +163,6 @@ class TextCompletionGenerator(Generator):
         # print(generated_tests)
         sentence_counter = 1
         for i, tests in enumerate(generated_tests):
-            
             # if bool(re.search(r'\d. ', tests)): # if the contains any integers.
             #     print("an integer found, parse with tokens")
             #     # while sentence_counter < 6:
@@ -191,12 +190,8 @@ class TextCompletionGenerator(Generator):
                     #     break
                     # print("middle check valid_tests 167: ")
                     # print(valid_tests)
-            # else: # parse without integers
-            #     tests = tests.split(". ")
-            #     tests = [test.replace('*', '') for test in tests]
-            #     print("SPLITTING TESTS by '. '")
-            #     valid_tests.extend(tests)
-            # parse without integers
+            
+        ###### Llama generation is cleaner, parse by sentence
             tests = tests.split(". ")
             tests = [test.replace('*', '') for test in tests]
             print("SPLITTING TESTS by '. '")
