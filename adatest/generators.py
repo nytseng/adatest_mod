@@ -162,38 +162,43 @@ class TextCompletionGenerator(Generator):
         sentence_counter = 1
         for i, tests in enumerate(generated_tests):
             
-            if bool(re.search(r'\d. ', tests)): # if the contains any integers.
-                print("an integer found, parse with tokens")
-                while sentence_counter < 6:
-                    split_tok = str(sentence_counter)+". "
-                    if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
-                        print("parsed 5 tests, return early")
-                        pruned_tests = self.prune_tests(valid_tests)
-                        return pruned_tests
+            # if bool(re.search(r'\d. ', tests)): # if the contains any integers.
+            #     print("an integer found, parse with tokens")
+            #     # while sentence_counter < 6:
+                #     split_tok = str(sentence_counter)+". "
+                #     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
+                #         print("parsed 5 tests, return early")
+                #         pruned_tests = self.prune_tests(valid_tests)
+                #         return pruned_tests
 
-                    print("next split_tok = " + split_tok)
-                    if split_tok in tests:
-                        split_list = tests.split(split_tok)
-                        print("SPLITTING TESTS by " + split_tok)
-                        print(split_list[0])
-                        temp_sentence = split_list[0]
-                        if temp_sentence != None and len(temp_sentence) > 8:
-                            valid_tests.append(temp_sentence)
-                            print("valid test: " + temp_sentence)
+                #     # # print("next split_tok = " + split_tok)
+                    # if split_tok in tests:
+                    #     split_list = tests.split(split_tok)
+                    #     print("SPLITTING TESTS by " + split_tok)
+                    #     print(split_list[0])
+                    #     temp_sentence = split_list[0]
+                    #     if temp_sentence != None and len(temp_sentence) > 8:
+                    #         valid_tests.append(temp_sentence)
+                    #         print("valid test: " + temp_sentence)
 
-                        tests = split_list[1] # leftover tests
-                        print(tests)
-                        sentence_counter += 1
-                    else: 
-                        print("token " + split_tok + " not found, return early")
-                        break
+                    #     tests = split_list[1] # leftover tests
+                    #     print(tests)
+                    #     sentence_counter += 1
+                    # else: 
+                    #     print("token " + split_tok + " not found, return early")
+                    #     break
                     # print("middle check valid_tests 167: ")
                     # print(valid_tests)
-            else: # parse without integers
-                tests = tests.split(". ")
-                tests = [test.replace('*', '') for test in tests]
-                print("SPLITTING TESTS by '. '")
-                valid_tests.extend(tests)
+            # else: # parse without integers
+            #     tests = tests.split(". ")
+            #     tests = [test.replace('*', '') for test in tests]
+            #     print("SPLITTING TESTS by '. '")
+            #     valid_tests.extend(tests)
+            # parse without integers
+            tests = tests.split(". ")
+            tests = [test.replace('*', '') for test in tests]
+            print("SPLITTING TESTS by '. '")
+            valid_tests.extend(tests)
 
         pruned_tests = self.prune_tests(valid_tests)
         print("returned tests: ")
