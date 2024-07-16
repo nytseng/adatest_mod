@@ -138,6 +138,8 @@ class TextCompletionGenerator(Generator):
             if len(test) > 135 or ';' in test:
                 test_list.remove(test)
                 print("removed test: " + test)
+            if 'Here are the rephrased sentences:' in test:
+                test_list.remove(test)
             else:
                 print("not removed test: " + test)
 
