@@ -163,8 +163,8 @@ class TextCompletionGenerator(Generator):
         sentence_counter = 1
         for i, tests in enumerate(generated_tests):
             
-            if bool(re.search(r'\d. ', tests)): # if the contains any integers.
-                print("an integer found, parse with tokens")
+            if bool(re.search(r'\d\. ', tests)): # if the contains any integers.
+                print("\d\. found, parse with tokens")
                 while sentence_counter < 6:
                     split_tok = str(sentence_counter)+". "
                     if len(valid_tests) >= 5 or len(tests) == 0 or tests == None: # limit to 5 generations
