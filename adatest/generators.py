@@ -191,8 +191,9 @@ class TextCompletionGenerator(Generator):
                     # print("middle check valid_tests 167: ")
                     # print(valid_tests)
             else: # parse without integers
-                tests = tests.split(". ")
-                tests = tests.split("\n")
+                # tests = tests.split(". ")
+                # tests = tests.split("\n")
+                tests = re.split('. |\n', tests)
                 tests = [test.replace('*', '') for test in tests]
                 print("SPLITTING TESTS by '. '")
                 valid_tests.extend(tests)
