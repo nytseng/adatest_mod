@@ -130,12 +130,13 @@ class TextCompletionGenerator(Generator):
         import re
         print("pruning tests")
         test_list = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in test_list]
+        test_list = [re.sub(r'\n', '', test) for test in test_list]
         # pruned_tests = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in valid_tests]
         test_list = [re.sub(r'\[.+?\]', '', test).replace(' .', '.').strip() for test in test_list]
         test_list = [re.sub(r'\(.*', '', test).strip() for test in test_list]
 
         for test in test_list:
-            if len(test) > 135 or ';' in test:
+            if len(test) < 24 or len(test) > 135 or ';' in test:
                 test_list.remove(test)
                 print("removed test: " + test)
             else:
@@ -191,6 +192,7 @@ class TextCompletionGenerator(Generator):
                     # print(valid_tests)
             else: # parse without integers
                 tests = tests.split(". ")
+                tests = tests.split("\n")
                 tests = [test.replace('*', '') for test in tests]
                 print("SPLITTING TESTS by '. '")
                 valid_tests.extend(tests)
