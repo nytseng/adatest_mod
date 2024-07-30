@@ -8,6 +8,7 @@ import os
 import adatest
 from .embedders import cos_sim
 import urllib
+import re
 
 try:
     import clip
@@ -127,7 +128,6 @@ class TextCompletionGenerator(Generator):
     # returns only the tests we want
     # given input of all tests
     def prune_tests(self, test_list):
-        import re
         print("pruning tests")
         test_list = [re.sub(r'\([^)]*\)', '', test).replace('* ', '').strip() for test in test_list]
         test_list = [re.sub(r'\n*', '', test) for test in test_list]
@@ -325,7 +325,10 @@ class Pipelines(HuggingFace):
                 elif generated_text[-1] == self.quote:
                     # Sometimes the quote is at the end without a trailing newline
                     generated_text = generated_text[:-1]
-                print("Text after parsing: ")
+                print("Text after parsing: ") 
+                # remove new lines
+                generated_text = re.sub('Or:', '', generated_text)
+                generated_text = re.sub(r'\n', '. ', generated_text)
                 print(generated_text)
                 suggestion_texts.append(generated_text)
 
