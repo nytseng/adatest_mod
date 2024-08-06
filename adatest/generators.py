@@ -135,12 +135,18 @@ class TextCompletionGenerator(Generator):
         test_list = [re.sub(r'\[.+?\]', '', test).replace(' .', '.').strip() for test in test_list]
         test_list = [re.sub(r'\(.*', '', test).strip().replace('..', '.') for test in test_list]
 
-        for test in test_list:
-            if len(test) < 24 or len(test) > 135 or ';' in test:
-                test_list.remove(test)
-                print("removed test: " + test)
-            else:
-                print("not removed test: " + test)
+        for i in range(len(test_list)):
+            [test_list.remove(test) for test in test_list if (len(test) < 24 or len(test) > 135 or ';' in test)]
+
+        while("" in test_list):
+            test_list.remove("")
+
+        # for test in test_list:
+        #     if len(test) < 24 or len(test) > 135 or ';' in test:
+        #         test_list.remove(test)
+        #         print("removed test: " + test)
+        #     else:
+        #         print("not removed test: " + test)
 
         if len(test_list) > 4:
             test_list = test_list[:4]
